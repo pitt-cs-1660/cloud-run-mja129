@@ -6,7 +6,7 @@
  *
  * NOTE: YOU ONLY NEED TO MODIFY THE VOTE FUNCTION AT THE BOTTOM OF THIS FILE.
  */
-firebase.initializeApp(config);
+// firebase.initializeApp(config);
 
 // Watch for state change from sign in
 function initApp() {
@@ -103,6 +103,15 @@ function toggle() {
  * === VOTE FUNCTION ===
  */
 
+
+/**
+ * Synchronous helper to throw alert, then reload window
+ */
+function success(team) {
+  window.alert(`Vote for ${team} successfully submitted!`);
+  window.location.reload();
+}
+
 /**
  * Sends the user's vote to the server.
  * @param team
@@ -120,8 +129,15 @@ async function vote(team) {
       /*
        * ++++ YOUR CODE HERE ++++
        */
-      window.alert(`Not implemented yet!`);
-
+      const response = await fetch("/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Authorization": `Bearer ${token}`
+        },
+        body: new URLSearchParams({ team: `${team}`, })
+      });
+      success(team);
     } catch (err) {
       console.log(`Error when submitting vote: ${err}`);
       window.alert('Something went wrong... Please try again!');
